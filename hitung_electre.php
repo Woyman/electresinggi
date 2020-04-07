@@ -3,7 +3,8 @@ include('config/koneksi.php');
 
 include('config/function.php');
 include('admin/proses/electre.php');
-
+    echo "<pre>";
+    print_r($_POST);
 $electre = new electre;
 $electre->setKonek($konek);
 $electre->setJenis($_POST['jenis']);
@@ -17,8 +18,7 @@ $rank = $electre->ranking($aggregat_dominan);
 $kriterias = $m_X['kriteria'];
 $alternatifs = $electre->getAllNameAlternatif();
 $bobots = $_POST['nilaiKriteria'];
-    // echo "<pre>";
-    // print_r($CD_DD);
+
 ?>
 
 

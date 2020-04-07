@@ -51,15 +51,15 @@ $qGetDataKriteria = mysqli_query($konek, "SELECT * FROM kriteria_kamera");
                   <h4>Nilai Bobot</h4>     
                   <p>Masukkan nilai bobot tiap kriteria untuk perhitungan electre</p>
                   <form action="hitung_electre.php" method="post">
-                    <input type="hidden" value="laptop" name="jenis" >
+                    <input type="hidden" value="kamera" name="jenis" >
                     <?php  
                       foreach($Allkriteria as $kri )
                       {
                     ?>
                       <div class="form-group">
-                        <label for="idK<?= $kri['id_kriteria'] ?>"><?= $kri['nama_kriteria'] ?></label>
-                          <input type="hidden" name="id_kriteria[]" value="<?= $kri['id_kriteria'] ?>" required>                          
-                          <input type="number" min='1' max='5' name="nilaiKriteria[]" id="idK<?= $kri['id_kriteria'] ?>" class="form-control" required>  
+                        <label for="idK<?= $kri['id_kriteria'] ?>"><?= $kri['nama_kriteria'] ?> <input type="checkbox" class="check" name="id_kriteria" data-id="<?= $kri['id_kriteria'] ?>" > </label>
+                          <input type="hidden" name="id_kriteria[]" value="<?= $kri['id_kriteria'] ?>" id="k<?= $kri['id_kriteria'] ?>" disabled required>                          
+                          <input type="number" min='1' max='5' name="nilaiKriteria[]" id="idK<?= $kri['id_kriteria'] ?>" class="form-control" required disabled>  
                       </div>
                     <?php 
                       }
@@ -81,6 +81,25 @@ $qGetDataKriteria = mysqli_query($konek, "SELECT * FROM kriteria_kamera");
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      
+      $('.check').change(function(){
+        var id = $(this).attr('data-id')
+
+        if ($(this).is(':checked')) 
+        {          
+          $('#idK'+id).removeAttr('disabled');
+          $('#k'+id).removeAttr('disabled');
+        }else{
+          $('#idK'+id).attr('disabled', true);
+          $('#k'+id).attr('disabled', true);
+        }
+
+      });
+
+    });
+  </script>
   
 
   </body>
