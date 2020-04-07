@@ -42,8 +42,8 @@ $qGetDataKriteria = mysqli_query($konek, "SELECT * FROM kriteria_kamera");
               $electre = new electre;
               $electre->setKonek($konek);
               $electre->setJenis('kamera');
-              $m_X = $electre->matrixX();      
-              $Allkriteria = $electre->getAllNameKriteria();
+              // $m_X = $electre->matrixX();      
+              $Allkriteria = $electre->getAllKriteria();
             ?>
             <div class="row">
               
@@ -57,7 +57,7 @@ $qGetDataKriteria = mysqli_query($konek, "SELECT * FROM kriteria_kamera");
                       {
                     ?>
                       <div class="form-group">
-                        <label for="idK<?= $kri['id_kriteria'] ?>"><?= $kri['nama_kriteria'] ?> <input type="checkbox" class="check" name="id_kriteria" data-id="<?= $kri['id_kriteria'] ?>" > </label>
+                        <label for="idK<?= $kri['id_kriteria'] ?>"><?= $kri['nama_kriteria'] ?> <input type="checkbox" class="check" data-id="<?= $kri['id_kriteria'] ?>" > </label>
                           <input type="hidden" name="id_kriteria[]" value="<?= $kri['id_kriteria'] ?>" id="k<?= $kri['id_kriteria'] ?>" disabled required>                          
                           <input type="number" min='1' max='5' name="nilaiKriteria[]" id="idK<?= $kri['id_kriteria'] ?>" class="form-control" required disabled>  
                       </div>

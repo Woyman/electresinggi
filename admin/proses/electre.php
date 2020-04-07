@@ -21,7 +21,7 @@ class electre
     {           
         // $result = array(); 
         $jenis = $this->jenis;
-        $q = "SELECT * FROM alternatif ORDER BY id_alternatif ASC";
+        $q = "SELECT * FROM alternatif ";
         $qGetAlternatif = mysqli_query($this->konek, $q);
         
         while($alt = mysqli_fetch_assoc($qGetAlternatif))
@@ -45,9 +45,26 @@ class electre
     }
     // =========== KRITERIA ==================
 
-    function getAllNameKriteria()
+    function getAllNameKriteria($id_kriteria)
     {   
         $t = $this->getTableJenisProduk($this->jenis);
+        $tKriteria = $t['kriteria'];                          
+        foreach($id_kriteria as $id_k)
+        {
+            $q = "SELECT * FROM $tKriteria where id_kriteria = '$id_k' ";
+            $getKriteria = mysqli_query($this->konek, $q);
+            $k = mysqli_fetch_assoc($getKriteria);
+            $res[] = $k;
+        }
+        
+        // echo "<pre>";
+        // print_r($res);        
+        return $res;
+    }
+
+    function getAllKriteria()
+    {
+         $t = $this->getTableJenisProduk($this->jenis);
         $tKriteria = $t['kriteria'];                      
         $q = "SELECT * FROM $tKriteria";
         $getKriteria = mysqli_query($this->konek, $q);
@@ -75,15 +92,14 @@ class electre
         return $table;
     }
 
-    function matrixX()
+    function matrixX($id_kriteria)
     {
         $t = $this->getTableJenisProduk($this->jenis); $tNilai = $t['nilai']; $indexKriteria = $t['id_tableKriteria'];
         $res['alternatif'] = $this->getAllNameAlternatif();
-        $res['kriteria'] = $this->getAllNameKriteria();
+        $res['kriteria'] = $this->getAllNameKriteria($id_kriteria);
 
         foreach($res['alternatif'] as $indexA => &$alt )
         {            
-            $nilai = [];
             $idAlternatif = $alt['id_alternatif'];
             foreach($res['kriteria'] as $index => &$k )
             {                   
@@ -102,9 +118,9 @@ class electre
         return $res;
     }
 
-    function matrixR()
+    function matrixR($m_X)
     {
-        $m_X = $this->matrixX();
+        // $m_X = $this->matrixX();
 
         $kriteria = $m_X['kriteria'];
         $alternatif = $m_X['alternatif'];
@@ -133,9 +149,9 @@ class electre
         return $m_R;
     }
 
-    function matrixV($bobot)
+    function matrixV($m_R, $bobot)
     {
-        $m_R = $this->matrixR();
+        // $m_R = $this->matrixR();
         $kriteria = $m_R['kriteria'];
         $alternatif = $m_R['alternatif'];
 
@@ -153,9 +169,9 @@ class electre
         return $m_V;
     }
 
-    function hitungCDdanDD($m_V)
+    function hitungCDdanDD($m_v)
     {
-        $m_v = $this->matrixV($m_V['bobot']);
+        // $m_v = $this->matrixV($m_V['bobot']);
         $alternatif = $m_v['alternatif'];
         $kriteria = $m_v['kriteria'];
 
@@ -239,6 +255,9 @@ class electre
                     if(empty($array_bawah))  $array_bawah = array(0);
 
                     $ar['nilaiDD'] = round(max($array_atas) / max($array_bawah), 4);
+
+                    // echo "round(".max($array_atas)." / ".max($array_bawah).", 4) =".$ar['nilaiDD']."<br>";
+
                     unset($array_atas); unset($array_bawah);
                 }
             }

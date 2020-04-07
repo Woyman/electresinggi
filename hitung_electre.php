@@ -3,19 +3,21 @@ include('config/koneksi.php');
 
 include('config/function.php');
 include('admin/proses/electre.php');
-    echo "<pre>";
-    print_r($_POST);
+    // echo "<pre>";
+    // print_r($_POST);
 $electre = new electre;
 $electre->setKonek($konek);
 $electre->setJenis($_POST['jenis']);
-$m_X = $electre->matrixX();
-$m_R = $electre->matrixR();
-$m_V = $electre->matrixV($_POST['nilaiKriteria']);
+$id_kriteria =  $electre->getAllNameKriteria($_POST['id_kriteria']);
+$m_X = $electre->matrixX($_POST['id_kriteria']);
+$kriterias = $m_X['kriteria'];
+$m_R = $electre->matrixR($m_X);
+$m_V = $electre->matrixV($m_R, $_POST['nilaiKriteria']);
 $CD_DD = $electre->hitungCDdanDD($m_V);
 $dominan_CCnDD = $electre->dominan_CDDD($CD_DD, $electre->getAllAlternatif());
 $aggregat_dominan = $electre->aggregateDominan($dominan_CCnDD);
 $rank = $electre->ranking($aggregat_dominan);
-$kriterias = $m_X['kriteria'];
+
 $alternatifs = $electre->getAllNameAlternatif();
 $bobots = $_POST['nilaiKriteria'];
 
